@@ -40,6 +40,11 @@ variable "providerazure" {
   description = "provider azure"
 }
 
+variable "umblab" {
+  type        = string
+  description = "environment name"
+}
+
 #in terraform.tfvars
 variable "timezone" {
   type        = string
@@ -93,6 +98,9 @@ variable "adress_space" {
   type        = string
   description = "IP space for subnet"
 }
+
+
+
 
 #in terraform.tfvars
 variable "azurerm_virtual_machine_ubuntu" {

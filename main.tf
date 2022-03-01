@@ -122,7 +122,7 @@ tags = {
 
 #Create Data Hard Disk
 resource "azurerm_managed_disk" "WindowsServer_Harddisk" {
-  name                 = "umblabwinserv-disk1"
+  name                 = "${var.environment}winserv-disk1"
   location             = azurerm_resource_group.appsvm.location
   resource_group_name  = var.azurerm_resource_group.name.services
   storage_account_type = "StandardSSD_LRS"
@@ -162,7 +162,7 @@ resource "azurerm_subnet" "internal" { /*Subent for VM*/
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.main.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = var.adress_space
 }
 
 resource "azurerm_network_interface" "main" { /*Network Interface for VM*/

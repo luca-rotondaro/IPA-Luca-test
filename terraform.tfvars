@@ -9,7 +9,7 @@ connectivity    = "connectivity"
 services        = "services"
 adress_prefix   = "192.168.1.0/24"
 adress_space    = "192.168.1.0/28"
-costcenter      = "UMB Lab"
+environment      = "umblab"
 
 
 #Written out variables
