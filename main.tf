@@ -6,7 +6,7 @@
 #(_)          (_)(_)         (_) (_)        (_)         (_)(_)(_)(_)(_)(_)         (_)  
 #(_)_  _  _  _(_)(_)         (_) (_)_  _  _ (_)         (_)         (_)(_) _  _  _ (_)  
 #  (_)(_)(_)(_)  (_)         (_)(_)(_)(_)(_)            (_)         (_)   (_)(_)(_)(_)  
-  
+
 #Creator: luca.rotondaro@umb.ch
 #FileName: main.tf
 #Date: 20.01.2022
@@ -19,12 +19,12 @@
 # Azure Provider source and version being used
 
 # More information on the authentication methods supported by
-  # the AzureRM Provider can be found here:
-  # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+# the AzureRM Provider can be found here:
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 # subscription_id = "..."
-  # client_id       = "..."
-  # client_secret   = "..."
-  # tenant_id       = "..."
+# client_id       = "..."
+# client_secret   = "..."
+# tenant_id       = "..."
 
 
 
@@ -50,12 +50,12 @@ resource "azurerm_resource_group" "connectivity" {
 
 /* Virtual Machine Ubuntu */
 
-resource "azurerm_virtual_machine" "ubuntuvm" {   /*Creat Virtual Machine "az-vm001"*/
-  name                  = "${var.providerazure}-vm001"
-  location              = var.resource_group_location
-  resource_group_name   = var.resource_group_name.services
+resource "azurerm_virtual_machine" "ubuntuvm" { /*Creat Virtual Machine "az-vm001"*/
+  name                = "${var.providerazure}-vm001"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name.services
   /*network_interface_ids = [azurerm_network_interface.main.id]*/
-  vm_size               = "Standard_DS3"
+  vm_size = "Standard_DS3"
 
   storage_image_reference {
     publisher = "Canonical"
@@ -80,8 +80,8 @@ resource "azurerm_virtual_machine" "ubuntuvm" {   /*Creat Virtual Machine "az-vm
   }
   tags = {
     environment = var.services
-    owner = var.cusname_short
-    creator = var.cusname_short
+    owner       = var.cusname_short
+    creator     = var.cusname_short
   }
 }
 
@@ -95,30 +95,30 @@ resource "azurerm_windows_virtual_machine" "WindowServer" {
   size                = "Standard_DS3"
   admin_username      = "${var.cusname_short}-admin"
   admin_password      = "P@$$w0rd1234!"
-  timezone = var.timezone
+  timezone            = var.timezone
   network_interface_ids = [
     azurerm_network_interface.x.id,
   ]
 }
 
-  os_disk {
-    name                 = "myosdisk1"
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
+os_disk {
+  name                 = "myosdisk1"
+  caching              = "ReadWrite"
+  storage_account_type = "Standard_LRS"
+}
 
-  source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2019-Datacenter"
-    version   = "latest"
-  }
+source_image_reference {
+  publisher = "MicrosoftWindowsServer"
+  offer     = "WindowsServer"
+  sku       = "2019-Datacenter"
+  version   = "latest"
+}
 
 tags = {
-    environment = var.services
-    owner = var.cusname_short
-    creator = var.cusname_short
-  }
+  environment = var.services
+  owner       = var.cusname_short
+  creator     = var.cusname_short
+}
 
 #Create Data Hard Disk
 resource "azurerm_managed_disk" "WindowsServer_Harddisk" {
@@ -129,7 +129,7 @@ resource "azurerm_managed_disk" "WindowsServer_Harddisk" {
   create_option        = "Empty"
   disk_size_gb         = 1024
 
-}  
+}
 
 
 
@@ -142,10 +142,10 @@ resource "azurerm_virtual_network" "vnet" {
   location            = azurerm_resource_group.connectivity.location
   resource_group_name = azurerm_resource_group.connectivity.name
 
-tags = {
+  tags = {
     environment = var.services
-    owner = var.cusname_short
-    creator = var.cusname_short
+    owner       = var.cusname_short
+    creator     = var.cusname_short
   }
 }
 
