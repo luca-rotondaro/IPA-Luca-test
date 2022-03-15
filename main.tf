@@ -28,33 +28,36 @@
 
 
 
+locals {
+  local_data = jsondecode(file("${path.module}/local-values.json"))
+}
 
 # Create a resource group rg-"cusname_short"-chn-management
 resource "azurerm_resource_group" "management" {
-  name     = "rg-${var.cusname_short}-${var.azregion}-${var.management}"
-  location = var.resource_groupe_location
+  name     = "rg-${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}-${var.management}"
+  location = var.location
 }
 
 # Create a resource group rg-"cusname_short"-chn-services
 resource "azurerm_resource_group" "services" {
-  name     = "rg-${var.cusname_short}-${var.azregion}-${var.services}"
-  location = var.resource_groupe_location
+  name     = "rg-${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}-${var.services}"
+  location = var.location
 }
 
 # Create a resource group rg-"cusname_short"-chn-connectivity
 resource "azurerm_resource_group" "connectivity" {
-  name     = "rg-${var.cusname_short}-${var.azregion}-${var.connectivity}"
-  location = var.resource_groupe_location
+  name     = "rg-${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}-${var.connectivity}"
+  location = var.location
 }
 
+/*
+/* Virtual Machine Ubuntu 
 
-/* Virtual Machine Ubuntu */
-
-resource "azurerm_virtual_machine" "ubuntuvm" { /*Creat Virtual Machine "az-vm001"*/
+resource "azurerm_virtual_machine" "ubuntuvm" {Creat Virtual Machine "az-vm001"
   name                = "${var.providerazure}-vm001"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name.services
-  /*network_interface_ids = [azurerm_network_interface.main.id]*/
+  network_interface_ids = [azurerm_network_interface.main.id]
   vm_size = "Standard_DS3"
 
   storage_image_reference {
@@ -85,8 +88,9 @@ resource "azurerm_virtual_machine" "ubuntuvm" { /*Creat Virtual Machine "az-vm00
   }
 }
 
+*/
 
-/* Virtual Machine Windows Server */
+/* Virtual Machine Windows Server 
 
 resource "azurerm_windows_virtual_machine" "WindowServer" {
   name                = "${var.providerazure}-vm002"
@@ -131,9 +135,9 @@ resource "azurerm_managed_disk" "WindowsServer_Harddisk" {
 
 }
 
+*/
 
-
-
+/*
 
 # Create virtual network 
 resource "azurerm_virtual_network" "vnet" {
@@ -158,14 +162,14 @@ resource "azurerm_subnet" "snet-GatewaySubnet" {
 
 }
 
-resource "azurerm_subnet" "internal" { /*Subent for VM*/
+resource "azurerm_subnet" "internal" { #Subent for VM
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.main.name
   address_prefixes     = var.adress_space
 }
 
-resource "azurerm_network_interface" "main" { /*Network Interface for VM*/
+resource "azurerm_network_interface" "main" { #Network Interface for VM
   name                = "${var.prefix}-nic"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
@@ -176,3 +180,4 @@ resource "azurerm_network_interface" "main" { /*Network Interface for VM*/
     private_ip_address_allocation = "Dynamic"
   }
 }
+*/

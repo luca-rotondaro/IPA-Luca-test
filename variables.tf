@@ -31,7 +31,6 @@
 #in terraform.tfvars
 variable "azregion" { 
   type = string
-  timezone = "W. Europe Standard Time"
   }
 
 #in terraform.tfvars
@@ -40,28 +39,16 @@ variable "providerazure" {
   description = "provider azure"
 }
 
-variable "umblab" {
+variable "environment" {
   type        = string
   description = "environment name"
 }
 
 #in terraform.tfvars
-variable "timezone" {
-  type        = string
-  description = "timezone switzerland"
-}
-
-#in terraform.tfvars
-variable "cusname_short" {
-  type        = string
-  description = "Customer short name"
-}
-
-#in terraform.tfvars
-variable "cusname_full" {
-  type        = string
-  description = "Customer full name"
-}
+#variable "timezone" {
+#  type        = string
+#  description = "timezone switzerland"
+#}
 
 #in terraform.tfvars
 variable "location" {
@@ -97,19 +84,4 @@ variable "adress_prefix" {
 variable "adress_space" {
   type        = string
   description = "IP space for subnet"
-}
-
-
-
-
-#in terraform.tfvars
-variable "azurerm_virtual_machine_ubuntu" {
-  type        = string
-  description = "var.provider."
-}
-
-#in terraform.tfvars
-variable "azurerm_virtual_machine_ubuntu-disk" {
-  type        = string
-  description = ""
 }

@@ -1,8 +1,5 @@
 azregion      = "chn"
 providerazure = "az"
-timezone      = "W. Europe Standard Time"
-cusname_short = "rot"
-cusname_full  = "Luca Rotondaro"
 location      = "switzerland north"
 management    = "management"
 connectivity  = "connectivity"
