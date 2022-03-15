@@ -1,0 +1,20 @@
+{
+    "result": {
+        "customer": {
+            "custCustomerNameFull": "Luca Rotondaro",
+            "custCustomerNameShort": "rot",
+            "custCentronId": "83829382",
+            "budget": "200"
+        },
+        "settings": {
+            "AzureADDomain": "bzhmu3kawnwhjw.onmicrosoft.com",
+            "AzureADTenantId": "GUID-Tenant-ID",
+            "AzureSubscriptionId": "GUID-Subscription"
+        },
+        "snow": {
+            "snowChangeId": "CHR89234823",
+            "snowChangeRequester": "andreas.reisinger@umb.ch",
+            "callbackLocation": "http://"
+        }
+    }
+}
