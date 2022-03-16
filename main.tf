@@ -50,134 +50,55 @@ resource "azurerm_resource_group" "connectivity" {
   location = var.location
 }
 
-/*
-/* Virtual Machine Ubuntu 
-
-resource "azurerm_virtual_machine" "ubuntuvm" {Creat Virtual Machine "az-vm001"
-  name                = "${var.providerazure}-vm001"
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name.services
-  network_interface_ids = [azurerm_network_interface.main.id]
-  vm_size = "Standard_DS3"
-
-  storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "20.04-LTS"
-    version   = "latest"
-
-  }
-  storage_os_disk {
-    name              = "myosdisk1"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
-  }
-  os_profile {
-    computer_name  = "${var.cusname_short}-vm-windowsserver"
-    admin_username = "${var.cusname_short}-admin"
-    admin_password = "P@$$w0rd1234!"
-  }
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
-  tags = {
-    environment = var.services
-    owner       = var.cusname_short
-    creator     = var.cusname_short
-  }
-}
-
-*/
-
-/* Virtual Machine Windows Server 
-
-resource "azurerm_windows_virtual_machine" "WindowServer" {
-  name                = "${var.providerazure}-vm002"
-  resource_group_name = var.azurerm_resource_group.name.services
-  location            = var.azurerm_resource_location
-  size                = "Standard_DS3"
-  admin_username      = "${var.cusname_short}-admin"
-  admin_password      = "P@$$w0rd1234!"
-  timezone            = var.timezone
-  network_interface_ids = [
-    azurerm_network_interface.x.id,
-  ]
-}
-
-os_disk {
-  name                 = "myosdisk1"
-  caching              = "ReadWrite"
-  storage_account_type = "Standard_LRS"
-}
-
-source_image_reference {
-  publisher = "MicrosoftWindowsServer"
-  offer     = "WindowsServer"
-  sku       = "2019-Datacenter"
-  version   = "latest"
-}
-
-tags = {
-  environment = var.services
-  owner       = var.cusname_short
-  creator     = var.cusname_short
-}
-
-#Create Data Hard Disk
-resource "azurerm_managed_disk" "WindowsServer_Harddisk" {
-  name                 = "${var.environment}winserv-disk1"
-  location             = azurerm_resource_group.appsvm.location
-  resource_group_name  = var.azurerm_resource_group.name.services
-  storage_account_type = "StandardSSD_LRS"
-  create_option        = "Empty"
-  disk_size_gb         = 1024
-
-}
-
-*/
-
-/*
-
-# Create virtual network 
+# Create virtual network (vnet)
 resource "azurerm_virtual_network" "vnet" {
-  name                = "vnet-${var.cusname_short}-${var.azregion}-${var.connectivity}"
+  name                = "vnet-${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}-${var.connectivity}"
   address_space       = var.adress_prefix
-  location            = azurerm_resource_group.connectivity.location
+  location            = var.location
   resource_group_name = azurerm_resource_group.connectivity.name
 
   tags = {
     environment = var.services
-    owner       = var.cusname_short
-    creator     = var.cusname_short
+    owner       = local.local_data.result.customer.custCustomerNameShort
+    creator     = local.local_data.result.customer.custCustomerNameShort
   }
 }
 
 # Create subnet Gateway
-resource "azurerm_subnet" "snet-GatewaySubnet" {
+resource "azurerm_subnet" "GatewaySubnet" {
   name                 = "GatewaySubnet"
-  resource_group_name  = azurerm_resource_group.management.name
+  resource_group_name  = azurerm_resource_group.connectivity.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = var.adress_space
+  address_prefixes     = var.adress_space_gateway
 
 }
 
-resource "azurerm_subnet" "internal" { #Subent for VM
-  name                 = "internal"
-  resource_group_name  = azurerm_resource_group.main.name
-  virtual_network_name = azurerm_virtual_network.main.name
-  address_prefixes     = var.adress_space
+# Create Subnet management for clients / workloads
+
+resource "azurerm_subnet" "snet-management" {
+  name                 = "snet-${azurerm_virtual_network.vnet.name}-management"
+  resource_group_name  = azurerm_resource_group.connectivity.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.adress_space_management
+
 }
 
-resource "azurerm_network_interface" "main" { #Network Interface for VM
-  name                = "${var.prefix}-nic"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
 
-  ip_configuration {
-    name                          = "testconfiguration1"
-    subnet_id                     = azurerm_subnet.internal.id
-    private_ip_address_allocation = "Dynamic"
-  }
+#AD Management
+
+#Azure AD Group for Subscription
+
+data "azuread_client_config" "current" {}
+
+resource "azuread_group" "example" {
+  display_name     = "example"
+  owners           = [data.azuread_client_config.current.object_id]
+  security_enabled = true
 }
-*/
+
+resource "azuread_user" "example" {
+  user_principal_name = local.local_data.result.snow.snowChangeRequester
+  display_name        = local.local_data.result.customer.custCustomerNameFull
+  mail_nickname       = "${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}"
+  password            = "SecretP@sswd99!"
+}

@@ -1,12 +1,12 @@
-azregion      = "chn"
-providerazure = "az"
-location      = "switzerland north"
-management    = "management"
-connectivity  = "connectivity"
-services      = "services"
-adress_prefix = "192.168.1.0/24"
-adress_space  = "192.168.1.0/28"
-environment   = "umblab"
+azregion                = "chn"
+providerazure           = "Europe West"
+management              = "management"
+connectivity            = "connectivity"
+services                = "services"
+adress_prefix           = "192.168.1.0/24"
+adress_space_gateway    = "192.168.1.0/27"
+adress_space_management = "192.168.1.64/26"
+environment             = "umblab"
 
 
 #Written out variables

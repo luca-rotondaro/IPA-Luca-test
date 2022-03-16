@@ -6,7 +6,7 @@
 #(_)          (_)(_)         (_) (_)        (_)         (_)(_)(_)(_)(_)(_)         (_)  
 #(_)_  _  _  _(_)(_)         (_) (_)_  _  _ (_)         (_)         (_)(_) _  _  _ (_)  
 #  (_)(_)(_)(_)  (_)         (_)(_)(_)(_)(_)            (_)         (_)   (_)(_)(_)(_)  
-  
+
 #Creator: luca.rotondaro@umb.ch
 #FileName: variable.ff
 #Date: 07.02.2022
@@ -29,9 +29,9 @@
 
 #variable "subId" {default = "cbfc2c91-e64b-43d0-9133-32a49ee7daae"}
 #in terraform.tfvars
-variable "azregion" { 
+variable "azregion" {
   type = string
-  }
+}
 
 #in terraform.tfvars
 variable "providerazure" {
