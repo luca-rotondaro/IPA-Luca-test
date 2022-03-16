@@ -1,0 +1,19 @@
+{
+    "result": {
+        "customer": {
+            "custCustomerNameFull": "Luca Rotondaro",
+            "custCustomerNameShort": "rot",
+            "budget": "300"
+        },
+        "settings": {
+            "AzureADDomain": "bzhmu3kawnwhjw.onmicrosoft.com",
+            "AzureADTenantId": "GUID-Tenant-ID",
+            "AzureSubscriptionId": "GUID-Subscription"
+        },
+        "snow": {
+            "snowChangeId": "CHR123456789",
+            "snowChangeRequester": "luca.rotondaro@umb.ch",
+            "callbackLocation": "http://"
+        }
+    }
+}
