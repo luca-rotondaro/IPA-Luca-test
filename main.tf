@@ -50,10 +50,15 @@ resource "azurerm_resource_group" "connectivity" {
   location = var.location
 }
 
+
+variable "vnet_address_space" {
+   type = list
+}
+
 # Create virtual network (vnet)
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet-${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}-${var.connectivity}"
-  address_space       = var.adress_prefix
+  address_space       = var.address_space
   location            = var.location
   resource_group_name = azurerm_resource_group.connectivity.name
 
@@ -69,7 +74,7 @@ resource "azurerm_subnet" "GatewaySubnet" {
   name                 = "GatewaySubnet"
   resource_group_name  = azurerm_resource_group.connectivity.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = var.adress_space_gateway
+  address_prefixes     = var.subnet1_address_prefix
 
 }
 
@@ -79,7 +84,7 @@ resource "azurerm_subnet" "snet-management" {
   name                 = "snet-${azurerm_virtual_network.vnet.name}-management"
   resource_group_name  = azurerm_resource_group.connectivity.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = var.adress_space_management
+  address_prefixes     = var.subnet2_address_prefix
 
 }
 

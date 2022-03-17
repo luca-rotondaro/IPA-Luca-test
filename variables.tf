@@ -45,12 +45,6 @@ variable "environment" {
 }
 
 #in terraform.tfvars
-#variable "timezone" {
-#  type        = string
-#  description = "timezone switzerland"
-#}
-
-#in terraform.tfvars
 variable "location" {
   type        = string
   description = "Standard location switzerland north"
@@ -75,13 +69,19 @@ variable "services" {
 }
 
 #in terraform.tfvars
-variable "adress_prefix" {
+variable "address_space" {
   type        = string
-  description = "IP Prefix for Vnet"
+  description = "IP space for vnet"
 }
 
 #in terraform.tfvars
-variable "adress_space" {
+variable "subnet1_address_prefix" {
   type        = string
-  description = "IP space for subnet"
+  description = "IP space for subnet clients"
+}
+
+#in terraform.tfvars
+variable "subnet2_address_prefix" {
+  type        = string
+  description = "IP space for subnet gateway"
 }
