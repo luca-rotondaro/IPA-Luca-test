@@ -70,18 +70,18 @@ variable "services" {
 
 #in terraform.tfvars
 variable "address_space" {
-  type        = string
+  type        = list(string)
   description = "IP space for vnet"
 }
 
 #in terraform.tfvars
 variable "subnet1_address_prefix" {
-  type        = string
+  type        = list(string)
   description = "IP space for subnet clients"
 }
 
 #in terraform.tfvars
 variable "subnet2_address_prefix" {
-  type        = string
+  type        = list(string)
   description = "IP space for subnet gateway"
 }

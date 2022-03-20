@@ -50,11 +50,6 @@ resource "azurerm_resource_group" "connectivity" {
   location = var.location
 }
 
-
-variable "vnet_address_space" {
-   type = list
-}
-
 # Create virtual network (vnet)
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet-${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}-${var.connectivity}"
@@ -93,17 +88,37 @@ resource "azurerm_subnet" "snet-management" {
 
 #Azure AD Group for Subscription
 
-data "azuread_client_config" "current" {}
+data "azuread_client_config" "current"{}
 
-resource "azuread_group" "example" {
-  display_name     = "example"
+resource "azuread_group" "current" {
+  display_name     = "current"
   owners           = [data.azuread_client_config.current.object_id]
   security_enabled = true
 }
 
-resource "azuread_user" "example" {
+resource "azuread_user" "current" {
   user_principal_name = local.local_data.result.snow.snowChangeRequester
   display_name        = local.local_data.result.customer.custCustomerNameFull
   mail_nickname       = "${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}"
   password            = "SecretP@sswd99!"
+}
+
+resource "azurerm_role_definition" "role" { #create roledefinition ad-role-rot-mgmt
+  name               = "ad-role-${local.local_data.result.customer.custCustomerNameShort}-${var.management}"
+  scope              = local.local_data.result.azure.subscription_id
+
+  permissions {
+    actions     = ["Microsoft.Resources/subscriptions/resourceGroups/owner"]
+    not_actions = []
+  }
+
+  assignable_scopes = [
+    local.local_data.result.azure.subscription_id,
+  ]
+}
+
+resource "azurerm_role_assignment" "current" {
+  scope              = local.local_data.result.azure.subscription_id
+  role_definition_id = azurerm_role_definition.role.role_definition_resource_id
+  principal_id       = data.azuread_client_config.current.object_id
 }
