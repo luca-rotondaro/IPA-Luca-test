@@ -1,8 +1,8 @@
 {
     "result": {
         "customer": {
-            "custCustomerNameFull": "Luca Rotondaro",
-            "custCustomerNameShort": "rot",
+            "fullName": "Luca Rotondaro",
+            "shortName": "rot",
             "budget": "300"
         },
         "settings": {
