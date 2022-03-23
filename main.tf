@@ -36,18 +36,36 @@ locals {
 resource "azurerm_resource_group" "management" {
   name     = "rg-${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}-${var.management}"
   location = var.location
+
+  tags = {
+    environment = var.services
+    owner       = local.local_data.result.customer.custCustomerNameShort
+    creator     = local.local_data.result.customer.custCustomerNameShort
+  }
 }
 
 # Create a resource group rg-"cusname_short"-chn-services
 resource "azurerm_resource_group" "services" {
   name     = "rg-${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}-${var.services}"
   location = var.location
+
+  tags = {
+    environment = var.services
+    owner       = local.local_data.result.customer.custCustomerNameShort
+    creator     = local.local_data.result.customer.custCustomerNameShort
+  }
 }
 
 # Create a resource group rg-"cusname_short"-chn-connectivity
 resource "azurerm_resource_group" "connectivity" {
   name     = "rg-${local.local_data.result.customer.custCustomerNameShort}-${var.azregion}-${var.connectivity}"
   location = var.location
+
+  tags = {
+    environment = var.services
+    owner       = local.local_data.result.customer.custCustomerNameShort
+    creator     = local.local_data.result.customer.custCustomerNameShort
+  }
 }
 
 # Create virtual network (vnet)
@@ -88,7 +106,7 @@ resource "azurerm_subnet" "snet-management" {
 
 #Azure AD Group for Subscription
 
-data "azuread_client_config" "current"{}
+data "azuread_client_config" "current" {}
 
 resource "azuread_group" "current" {
   display_name     = "current"
@@ -104,8 +122,8 @@ resource "azuread_user" "current" {
 }
 
 resource "azurerm_role_definition" "role" { #create roledefinition ad-role-rot-mgmt
-  name               = "ad-role-${local.local_data.result.customer.custCustomerNameShort}-${var.management}"
-  scope              = local.local_data.result.azure.subscription_id
+  name  = "ad-role-${local.local_data.result.customer.custCustomerNameShort}-${var.management}"
+  scope = local.local_data.result.azure.subscription_id
 
   permissions {
     actions     = ["Microsoft.Resources/subscriptions/resourceGroups/owner"]
@@ -118,7 +136,96 @@ resource "azurerm_role_definition" "role" { #create roledefinition ad-role-rot-m
 }
 
 resource "azurerm_role_assignment" "current" {
-  scope              = local.local_data.result.azure.subscription_id
+  scope              = "/subscriptions/${local.local_data.result.azure.subscription_id}"
   role_definition_id = azurerm_role_definition.role.role_definition_resource_id
   principal_id       = data.azuread_client_config.current.object_id
+}
+
+#Cost Management and Notifications
+
+resource "azurerm_monitor_action_group" "management" {
+  name                = "sub-budget-${local.local_data.result.customer.custCustomerNameShort}"
+  resource_group_name = azurerm_resource_group.management.name
+  short_name          = "agroup-${local.local_data.result.customer.custCustomerNameShort}"
+}
+
+resource "azurerm_consumption_budget_resource_group" "management" {
+  name              = "sub-budget-${local.local_data.result.customer.custCustomerNameShort}"
+  resource_group_id = azurerm_resource_group.management.id
+
+  amount     = local.local_data.result.customer.budget
+  time_grain = "Monthly"
+
+  time_period {
+    start_date = "${local.local_data.result.azure.start_date}Z"
+    end_date   = "${local.local_data.result.azure.end_date}Z"
+  }
+
+  filter {
+    tag {
+      name = "Monitoring-${local.local_data.result.customer.custCustomerNameShort}"
+      values = [
+        local.local_data.result.customer.custCustomerNameShort,
+      ]
+    }
+  }
+
+  notification {
+    enabled        = true
+    threshold      = 50.0
+    operator       = "EqualTo"
+    threshold_type = "Actual"
+
+    contact_emails = [
+      local.local_data.result.snow.snowChangeRequester,
+      "luca.rotondaro@umb.ch",
+    ]
+
+    contact_groups = [
+      azurerm_monitor_action_group.management.id,
+    ]
+
+    contact_roles = [
+      "owner",
+    ]
+  }
+
+  notification {
+    enabled        = true
+    threshold      = 80.0
+    operator       = "EqualTo"
+    threshold_type = "Actual"
+
+    contact_emails = [
+      local.local_data.result.snow.snowChangeRequester,
+      "luca.rotondaro@umb.ch",
+    ]
+
+    contact_groups = [
+      azurerm_monitor_action_group.management.id,
+    ]
+
+    contact_roles = [
+      "owner",
+    ]
+  }
+  notification {
+    enabled        = true
+    threshold      = 95.0
+    operator       = "EqualTo"
+    threshold_type = "Actual"
+
+    contact_emails = [
+      local.local_data.result.snow.snowChangeRequester,
+      "luca.rotondaro@umb.ch",
+    ]
+
+    contact_groups = [
+      azurerm_monitor_action_group.management.id,
+    ]
+
+    contact_roles = [
+      "owner",
+    ]
+  }
 }

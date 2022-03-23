@@ -16,7 +16,9 @@
             "callbackLocation": "http://"
         },
         "azure": {
-            "subscription_id": ""            
+            "subscription_id": "15491810-ad31-46dc-b3fd-9184a1109e63 ",
+            "start_date": "2022-06-01T00:00:00",
+            "end_date": "2022-06-01T00:00:00"
         }
     }
 }
