@@ -1,5 +1,4 @@
 azregion               = "chn"
-location               = "Europe West"
 providerazure          = "Europe West"
 management             = "management"
 connectivity           = "connectivity"
