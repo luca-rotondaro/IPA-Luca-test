@@ -115,7 +115,7 @@ resource "azuread_group" "current" {
 }
 
 resource "azuread_user" "current" {
-  user_principal_name = local.local_data.result.snow.snowChangeRequester
+  user_principal_name = local.local_data.result.customer.email
   display_name        = local.local_data.result.customer.fullName
   mail_nickname       = "${local.local_data.result.customer.shortName}-${var.azregion}"
   password            = "SecretP@sswd99!"
@@ -177,7 +177,7 @@ resource "azurerm_consumption_budget_resource_group" "management" {
     threshold_type = "Actual"
 
     contact_emails = [
-      local.local_data.result.snow.snowChangeRequester,
+      local.local_data.result.customer.email,
       "luca.rotondaro@umb.ch",
     ]
 
@@ -197,7 +197,7 @@ resource "azurerm_consumption_budget_resource_group" "management" {
     threshold_type = "Actual"
 
     contact_emails = [
-      local.local_data.result.snow.snowChangeRequester,
+      local.local_data.result.customer.email,
       "luca.rotondaro@umb.ch",
     ]
 
@@ -216,7 +216,7 @@ resource "azurerm_consumption_budget_resource_group" "management" {
     threshold_type = "Actual"
 
     contact_emails = [
-      local.local_data.result.snow.snowChangeRequester,
+      local.local_data.result.customer.email,
       "luca.rotondaro@umb.ch",
     ]
 

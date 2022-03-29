@@ -1,24 +1,19 @@
 {
     "result": {
+        "properties": {
+            "id": "RITM0018628",
+            "state": "initial"
+        },
         "customer": {
-            "fullName": "Luca Rotondaro",
-            "shortName": "rot",
-            "budget": "300"
-        },
-        "settings": {
-            "AzureADDomain": "bzhmu3kawnwhjw.onmicrosoft.com",
-            "AzureADTenantId": "GUID-Tenant-ID",
-            "AzureSubscriptionId": "GUID-Subscription"
-        },
-        "snow": {
-            "snowChangeId": "CHR123456789",
-            "snowChangeRequester": "luca.rotondaro@umb.ch",
-            "callbackLocation": "http://"
+            "fullName": "Hao Ly",
+            "shortName": "hly",
+            "budget": "78",
+            "email": "hao.ly@umb.ch"
         },
         "azure": {
-            "subscription_id": "15491810-ad31-46dc-b3fd-9184a1109e63 ",
-            "start_date": "2022-06-01T00:00:00",
-            "end_date": "2022-06-01T00:00:00"
+            "start_date": "2022-03-23T15:44:28.000",
+            "end_date": "2022-04-08T14:43:18.000",
+            "subscription_id": "15491810-ad31-46dc-b3fd-9184a1109e63 "
         }
     }
 }
