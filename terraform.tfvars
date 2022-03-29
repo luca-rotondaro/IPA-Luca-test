@@ -1,11 +1,6 @@
 azregion               = "chn"
-<<<<<<< HEAD
-providerazure          = "West Europe"
-location               = "West Europe"
-=======
 location               = "Europe West"
 providerazure          = "Europe West"
->>>>>>> 78d265f593456c2a2faf2a8cc994b073bd53b0f4
 management             = "management"
 connectivity           = "connectivity"
 services               = "services"
