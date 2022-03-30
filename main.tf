@@ -105,7 +105,7 @@ resource "azurerm_subnet" "snet-management" {
 #AD Management
 
 #Azure AD Group for Subscription
-
+// nörtig? wenn ja in sep File
 data "azuread_client_config" "current" {}
 
 resource "azuread_group" "current" {
@@ -118,10 +118,10 @@ resource "azuread_user" "current" {
   user_principal_name = local.local_data.result.customer.email
   display_name        = local.local_data.result.customer.fullName
   mail_nickname       = "${local.local_data.result.customer.shortName}-${var.azregion}"
-  password            = "SecretP@sswd99!"
+  password            = "SecretP@sswd99!" 
 }
 
-resource "azurerm_role_definition" "role" { #create roledefinition ad-role-rot-mgmt
+#resource "azurerm_role_definition" "role" { #create roledefinition ad-role-rot-mgmt
   name  = "ad-role-${local.local_data.result.customer.shortName}-${var.management}"
   scope = local.local_data.result.azure.subscription_id
 
@@ -135,10 +135,11 @@ resource "azurerm_role_definition" "role" { #create roledefinition ad-role-rot-m
   ]
 }
 
+// 
 resource "azurerm_role_assignment" "current" {
   scope              = "/subscriptions/${local.local_data.result.azure.subscription_id}"
-  role_definition_id = azurerm_role_definition.role.role_definition_resource_id
-  principal_id       = data.azuread_client_config.current.object_id
+  role_definition_id = "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+  principal_id       = azuread_group.current.object_id
 }
 
 #Cost Management and Notifications
