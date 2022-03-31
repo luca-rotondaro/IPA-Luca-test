@@ -1,4 +1,4 @@
-azregion               = "chn"
+azregion               = "euw"
 providerazure          = "westeurope"
 location               = "westeurope"
 creator                = "luca.rotondaro@umb.ch"
