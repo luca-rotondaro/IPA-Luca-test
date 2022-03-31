@@ -11,8 +11,8 @@
             "email": "luca.rotondaro@umb.ch"
         },
         "azure": {
-            "start_date": "2022-03-01T11:51:54.000",
-            "end_date": "2022-04-30T11:51:43.000",
+            "start_date": "2022-03-01T11:51:54.000Z",
+            "end_date": "2022-04-30T11:51:43.000Z",
             "subscription_id": "e989b201-2a97-403e-8828-086c09894a4f"
         }
     }

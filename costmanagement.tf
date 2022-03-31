@@ -29,8 +29,8 @@ resource "azurerm_consumption_budget_resource_group" "management" {
   time_grain = "Monthly"
 
   time_period {
-    start_date = "${local.local_data.result.azure.start_date}Z"
-    end_date   = "${local.local_data.result.azure.end_date}Z"
+    start_date = "${local.local_data.result.azure.start_date}"
+    end_date   = "${local.local_data.result.azure.end_date}"
   }
 
   filter {
