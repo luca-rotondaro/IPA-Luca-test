@@ -39,7 +39,7 @@ resource "azurerm_resource_group" "management" {
 
   tags = {
     environment = var.services
-    owner       = local.local_data.result.customer.shortName
+    owner       = local.local_data.result.customer.fullName
     creator     = var.creator
   }
 }
@@ -51,7 +51,7 @@ resource "azurerm_resource_group" "services" {
 
   tags = {
     environment = var.services
-    owner       = local.local_data.result.customer.shortName
+    owner       = local.local_data.result.customer.fullName
     creator     = var.creator
   }
 }
@@ -63,7 +63,7 @@ resource "azurerm_resource_group" "connectivity" {
 
   tags = {
     environment = var.services
-    owner       = local.local_data.result.customer.shortName
+    owner       = local.local_data.result.customer.fullName
     creator     = var.creator
   }
 }
@@ -77,7 +77,7 @@ resource "azurerm_virtual_network" "vnet" {
 
   tags = {
     environment = var.services
-    owner       = local.local_data.result.customer.shortName
+    owner       = local.local_data.result.customer.fullName
     creator     = var.creator
   }
 }
@@ -106,24 +106,24 @@ resource "azurerm_subnet" "snet-management" {
 
 #Azure AD Group for Subscription
 // nörtig? wenn ja in sep File
-data "azuread_client_config" "current" {}
+data "azuread_client_config" "adclientconfig" {}
 
-resource "azuread_group" "current" {
+resource "azuread_group" "adgroup" {
   display_name     = "current"
-  owners           = [data.azuread_client_config.current.object_id]
+  owners           = [data.azuread_client_config.adclientconfig.object_id]
   security_enabled = true
 }
 
-resource "azuread_user" "current" {
+resource "azuread_user" "aduser" {
   user_principal_name = local.local_data.result.customer.email
   display_name        = local.local_data.result.customer.fullName
   mail_nickname       = "${local.local_data.result.customer.shortName}-${var.azregion}"
   password            = "SecretP@sswd99!"
 }
 
-resource "azurerm_role_assignment" "current" {
+resource "azurerm_role_assignment" "adrole" {
   scope              = "/subscriptions/${local.local_data.result.azure.subscription_id}"
   role_definition_id = "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
-  principal_id       = azuread_group.current.object_id
+  principal_id       = azuread_group.adgroup.object_id
 }
 
