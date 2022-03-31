@@ -1,18 +1,18 @@
 {
     "result": {
         "properties": {
-            "id": "RITM0018628",
+            "id": "RITM0018682",
             "state": "initial"
         },
         "customer": {
-            "fullName": "Hao Ly",
-            "shortName": "hly",
-            "budget": "78",
-            "email": "hao.ly@umb.ch"
+            "fullName": "Luca Rotondaro",
+            "shortName": "LUR",
+            "budget": "600",
+            "email": "luca.rotondaro@umb.ch"
         },
         "azure": {
-            "start_date": "2022-03-23T15:44:28.000",
-            "end_date": "2022-04-08T14:43:18.000",
+            "start_date": "2022-03-01T11:51:54.000",
+            "end_date": "2022-04-30T11:51:43.000",
             "subscription_id": "15491810-ad31-46dc-b3fd-9184a1109e63 "
         }
     }

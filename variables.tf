@@ -34,6 +34,12 @@ variable "azregion" {
 }
 
 #in terraform.tfvars
+variable "creator" {
+  type        = string
+  description = "creator luca rotondaro"
+}
+
+#in terraform.tfvars
 variable "providerazure" {
   type        = string
   description = "provider azure"
@@ -47,7 +53,7 @@ variable "environment" {
 #in terraform.tfvars
 variable "location" {
   type        = string
-  description = "Standard location switzerland north"
+  description = "Standard location Europe West"
 }
 
 #in terraform.tfvars

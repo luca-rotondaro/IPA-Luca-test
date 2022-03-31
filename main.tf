@@ -9,7 +9,7 @@
 
 #Creator: luca.rotondaro@umb.ch
 #FileName: main.tf
-#Date: 20.01.2022
+#Date: 17.04.2022
 #Description: main file für Azure Test Lab umgebung
 #-->
 
@@ -40,7 +40,7 @@ resource "azurerm_resource_group" "management" {
   tags = {
     environment = var.services
     owner       = local.local_data.result.customer.shortName
-    creator     = local.local_data.result.customer.shortName
+    creator     = var.creator
   }
 }
 
@@ -52,7 +52,7 @@ resource "azurerm_resource_group" "services" {
   tags = {
     environment = var.services
     owner       = local.local_data.result.customer.shortName
-    creator     = local.local_data.result.customer.shortName
+    creator     = var.creator
   }
 }
 
@@ -64,7 +64,7 @@ resource "azurerm_resource_group" "connectivity" {
   tags = {
     environment = var.services
     owner       = local.local_data.result.customer.shortName
-    creator     = local.local_data.result.customer.shortName
+    creator     = var.creator
   }
 }
 
@@ -78,7 +78,7 @@ resource "azurerm_virtual_network" "vnet" {
   tags = {
     environment = var.services
     owner       = local.local_data.result.customer.shortName
-    creator     = local.local_data.result.customer.shortName
+    creator     = var.creator
   }
 }
 
@@ -118,115 +118,12 @@ resource "azuread_user" "current" {
   user_principal_name = local.local_data.result.customer.email
   display_name        = local.local_data.result.customer.fullName
   mail_nickname       = "${local.local_data.result.customer.shortName}-${var.azregion}"
-  password            = "SecretP@sswd99!" 
+  password            = "SecretP@sswd99!"
 }
 
-#resource "azurerm_role_definition" "role" { #create roledefinition ad-role-rot-mgmt
-  name  = "ad-role-${local.local_data.result.customer.shortName}-${var.management}"
-  scope = local.local_data.result.azure.subscription_id
-
-  permissions {
-    actions     = ["Microsoft.Resources/subscriptions/resourceGroups/owner"]
-    not_actions = []
-  }
-
-  assignable_scopes = [
-    local.local_data.result.azure.subscription_id,
-  ]
-}
-
-// 
 resource "azurerm_role_assignment" "current" {
   scope              = "/subscriptions/${local.local_data.result.azure.subscription_id}"
   role_definition_id = "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
   principal_id       = azuread_group.current.object_id
 }
 
-#Cost Management and Notifications
-
-resource "azurerm_monitor_action_group" "management" {
-  name                = "sub-budget-${local.local_data.result.customer.shortName}"
-  resource_group_name = azurerm_resource_group.management.name
-  short_name          = "agroup-${local.local_data.result.customer.shortName}"
-}
-
-resource "azurerm_consumption_budget_resource_group" "management" {
-  name              = "sub-budget-${local.local_data.result.customer.shortName}"
-  resource_group_id = azurerm_resource_group.management.id
-
-  amount     = local.local_data.result.customer.budget
-  time_grain = "Monthly"
-
-  time_period {
-    start_date = "${local.local_data.result.azure.start_date}Z"
-    end_date   = "${local.local_data.result.azure.end_date}Z"
-  }
-
-  filter {
-    tag {
-      name = "Monitoring-${local.local_data.result.customer.shortName}"
-      values = [
-        local.local_data.result.customer.shortName,
-      ]
-    }
-  }
-
-  notification {
-    enabled        = true
-    threshold      = 50.0
-    operator       = "EqualTo"
-    threshold_type = "Actual"
-
-    contact_emails = [
-      local.local_data.result.customer.email,
-      "luca.rotondaro@umb.ch",
-    ]
-
-    contact_groups = [
-      azurerm_monitor_action_group.management.id,
-    ]
-
-    contact_roles = [
-      "owner",
-    ]
-  }
-
-  notification {
-    enabled        = true
-    threshold      = 80.0
-    operator       = "EqualTo"
-    threshold_type = "Actual"
-
-    contact_emails = [
-      local.local_data.result.customer.email,
-      "luca.rotondaro@umb.ch",
-    ]
-
-    contact_groups = [
-      azurerm_monitor_action_group.management.id,
-    ]
-
-    contact_roles = [
-      "owner",
-    ]
-  }
-  notification {
-    enabled        = true
-    threshold      = 95.0
-    operator       = "EqualTo"
-    threshold_type = "Actual"
-
-    contact_emails = [
-      local.local_data.result.customer.email,
-      "luca.rotondaro@umb.ch",
-    ]
-
-    contact_groups = [
-      azurerm_monitor_action_group.management.id,
-    ]
-
-    contact_roles = [
-      "owner",
-    ]
-  }
-}
