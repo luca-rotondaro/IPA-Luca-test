@@ -69,6 +69,12 @@ variable "services" {
 }
 
 #in terraform.tfvars
+variable "vnet_name" {
+  type        = list(string)
+  description = "vnet name"
+}
+
+#in terraform.tfvars
 variable "address_space" {
   type        = list(string)
   description = "IP space for vnet"
