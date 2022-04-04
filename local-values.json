@@ -11,9 +11,10 @@
             "email": "luca.rotondaro@umb.ch"
         },
         "azure": {
-            "start_date": "2022-03-01T11:51:54.000Z",
-            "end_date": "2022-04-30T11:51:43.000Z",
-            "subscription_id": "b7bbcd83-73a4-4f4e-9505-6d9662be34d2"
+            "start_date": "2022-05-01T11:51:54.000Z",
+            "end_date": "2022-06-30T11:51:43.000Z",
+            "subscription_id": "b7bbcd83-73a4-4f4e-9505-6d9662be34d2",
+            "callbackurl": "https://umbagdev.service-now.com/api/umba2/bluezone/azure_lab/INC00012121/provisioned"
         }
     }
 }
