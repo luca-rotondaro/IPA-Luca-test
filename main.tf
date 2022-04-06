@@ -38,7 +38,7 @@ resource "azurerm_resource_group" "management" {
   location = var.location
 
   tags = {
-    environment = var.services
+    environment = var.management
     owner       = local.local_data.result.customer.fullName
     creator     = var.creator
   }
@@ -62,7 +62,7 @@ resource "azurerm_resource_group" "connectivity" {
   location = var.location
 
   tags = {
-    environment = var.services
+    environment = var.connectivity
     owner       = local.local_data.result.customer.fullName
     creator     = var.creator
   }
@@ -76,7 +76,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = azurerm_resource_group.connectivity.name
 
   tags = {
-    environment = var.services
+    environment = var.connectivity
     owner       = local.local_data.result.customer.fullName
     creator     = var.creator
   }
@@ -115,10 +115,11 @@ resource "azuread_group" "adgroup" {
 }
 
 resource "azuread_user" "aduser" {
-  user_principal_name = local.local_data.result.customer.email
-  display_name        = local.local_data.result.customer.fullName
-  mail_nickname       = "${local.local_data.result.customer.shortName}-${var.azregion}"
-  password            = "SecretP@sswd99!"
+  user_principal_name   = local.local_data.result.customer.email
+  display_name          = local.local_data.result.customer.fullName
+  mail_nickname         = "${local.local_data.result.customer.shortName}-${var.azregion}"
+  password              = "SecretP@sswd99!"
+  force_password_change = true
 }
 
 resource "azurerm_role_assignment" "adrole" {
