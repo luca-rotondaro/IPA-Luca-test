@@ -1,7 +1,7 @@
 azregion               = "euw"
 providerazure          = "westeurope"
 location               = "westeurope"
-creator                = "luca.rotondaro@umb.ch"
+creator                = "Team Cloud"
 management             = "management"
 connectivity           = "connectivity"
 services               = "services"
